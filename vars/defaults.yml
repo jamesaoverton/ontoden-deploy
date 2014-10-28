@@ -1,0 +1,14 @@
+---
+# DO NOT EDIT
+# Make your changes in `vars/users.yml`
+
+### common
+# domain: (required)
+# mysql_root_password: (required)
+ontobee_domain: ontobee.{{ domain }}
+
+### triplestore
+#virtuoso_dba_password: (required)
+
+### ontobee
+#mysql_ontobee_password: (required)

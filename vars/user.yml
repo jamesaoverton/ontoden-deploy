@@ -1,0 +1,7 @@
+---
+# See `vars/defaults.yml` for available options.
+
+domain: TODO.org
+mysql_root_password: TODO
+virtuoso_dba_password: TODO
+mysql_ontobee_password: TODO

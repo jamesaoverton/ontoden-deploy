@@ -1,0 +1,15 @@
+<VirtualHost *:80>
+    ServerName {{ ontobee_domain }}
+
+    DocumentRoot /var/www/ontobee 
+    <Directory />
+      Options Indexes MultiViews FollowSymLinks
+      AllowOverride None
+      Order allow,deny
+      allow from all
+    </Directory>
+
+    CustomLog /var/log/apache2/ontobee_access.log combined 
+    ErrorLog /var/log/apache2/ontobee_error.log 
+</VirtualHost>
+

@@ -1,0 +1,14 @@
+- name: Pre-configure triplestore admin password
+  debconf: name=virtuoso-opensource question=virtuoso-opensource-6.1/dba-password value={{ virtuoso_dba_password }} vtype=password
+
+- name: Confirm triplestore admin password
+  debconf: name=virtuoso-opensource question=virtuoso-opensource-6.1/dba-password-again value={{ virtuoso_dba_password }} vtype=password
+
+- name: Install triplestore
+  apt: pkg=virtuoso-opensource state=installed
+  notify: restart virtuoso
+
+# WARNING: This is for testing purposes only!!!!
+# In production, use a ssh tunnel instead:
+#- name: DANGER Open firewall 8890 for Virtuoso admin
+#  ufw: rule=allow port=8890 proto=tcp
