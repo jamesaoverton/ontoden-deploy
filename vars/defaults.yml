@@ -2,6 +2,8 @@
 # DO NOT EDIT
 # Make your changes in `vars/users.yml`
 
+testing: false
+
 ### common
 # domain: (required)
 # mysql_root_password: (required)

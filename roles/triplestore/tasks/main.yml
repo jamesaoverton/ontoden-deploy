@@ -10,5 +10,6 @@
 
 # WARNING: This is for testing purposes only!!!!
 # In production, use a ssh tunnel instead:
-#- name: DANGER Open firewall 8890 for Virtuoso admin
-#  ufw: rule=allow port=8890 proto=tcp
+- name: DANGER Open firewall 8890 for Virtuoso admin
+  ufw: rule=allow port=8890 proto=tcp
+  when: testing
