@@ -58,7 +58,7 @@ Then access Virtuoso at <http://localhost:8890>.
 
 We haven't yet automated the process of loading ontology files into Virtuoso.
 
-1. open the Virutoso in your browser
+1. open Virtuoso in your browser (links in the instructions above)
 2. click the Conductor link at the top left
 3. log in as "dba" with your `virtuoso_dba_password` from `vars/user.yml`
 4. follow [these instructions](http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/VirtTipsAndTricksGuideImportOntology)
