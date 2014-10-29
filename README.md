@@ -2,6 +2,8 @@
 
 Here are scripts to get [ontoden](https://github.com/ontoden) tools (so far just [Ontobee](https://github.com/ontoden/ontobee)) running on your own machine.
 
+You have two installation options: a local virtual machine or your own server. Once that's running, there are some manual steps required to load ontologies.
+
 
 ## Local Virtual Machine
 
