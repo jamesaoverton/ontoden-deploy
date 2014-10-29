@@ -70,6 +70,9 @@ You might also want to modify the `ontobee.ontology` MySQL table either directly
 
 - Ontobee has an external dependency that we're currently disabling: <https://github.com/ontoden/ontobee/issues/6>
 - There's no code for loading ontologies, and the tables in `roles/ontobee/files` are just reverse-engineered hacks.
+- Not everything works yet. A good place to start debugging is `/var/log/apache2/ontobee_error.log`.
+
+
 
 
 # License
