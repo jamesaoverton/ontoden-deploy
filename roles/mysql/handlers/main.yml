@@ -1,0 +1,5 @@
+- name: restart mysql
+  action: service name=mysql state=restarted
+
+- name: import ontoden.sql
+  mysql_db: name=ontoden state=import target=/tmp/ontoden.sql

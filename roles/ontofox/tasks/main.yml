@@ -1,0 +1,41 @@
+- name: Install OntoFox dependencies
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - openjdk-7-jre-headless
+
+- name: Install OntoFox from Google Code
+  subversion: repo=http://ontofox.googlecode.com/svn/trunk/
+              dest={{ ontofox_path }}
+
+- name: Download ADOdb5 dependency
+  get_url: url=https://downloads.sourceforge.net/project/adodb/adodb-php5-only/adodb-519-for-php5/adodb519.tar.gz dest=/tmp/adodb519.tar.gz sha256sum=2a83383766ca46a77506ac2a0c1ed43662bc39b478c30a6da45c788c7fd13419
+
+- name: Unpack ADOdb5 dependency
+  unarchive: src=/tmp/adodb519.tar.gz dest={{ ontofox_path }}/inc copy=no
+
+- name: Change owner to www-data
+  file: path={{ ontofox_path }} state=directory owner=www-data group=www-data recurse=yes
+
+- name: Set OntoFox SQL host
+  lineinfile: dest={{ ontofox_path }}/inc/functions.php regexp='^\$host' line='$host="localhost";'
+
+- name: Set OntoFox SQL username
+  lineinfile: dest={{ ontofox_path }}/inc/functions.php regexp='^\$username' line='$username="ontoden";'
+
+- name: Set OntoFox SQL password
+  lineinfile: dest={{ ontofox_path }}/inc/functions.php regexp='^\$password' line='$password=\"{{ mysql_ontoden_password }}\";'
+
+- name: Set OntoFox SQL database
+  lineinfile: dest={{ ontofox_path }}/inc/functions.php regexp='^\$database' line='$database="ontoden";'
+
+- name: Set OntoFox userfiles path
+  lineinfile: dest={{ ontofox_path }}/inc/functions.php regexp='^\$userfiles' line='$userfiles="{{ ontofox_path }}/userfiles"';
+
+- name: Configure the Apache HTTP server for OntoFox
+  template: src=etc_apache2_sites-available_ontofox.j2 dest=/etc/apache2/sites-available/ontofox.conf group=root owner=root force=yes
+  notify: restart apache
+
+- name: Enable OntoFox site
+  command: a2ensite ontofox.conf creates=/etc/apache2/sites-enabled/ontofox.conf
+  notify: restart apache
+

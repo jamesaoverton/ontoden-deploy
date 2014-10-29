@@ -8,5 +8,7 @@
 
   roles:
     - common
-    - triplestore
+    - mysql
+    - virtuoso
     - ontobee
+    - ontofox

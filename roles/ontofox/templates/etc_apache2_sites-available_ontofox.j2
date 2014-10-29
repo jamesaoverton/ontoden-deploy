@@ -1,0 +1,16 @@
+<VirtualHost *:80>
+    ServerName {{ ontofox_domain }}
+    ServerAlias {{ ontofox_prefix }}.*.xip.io
+
+    DocumentRoot {{ ontofox_path }}
+    <Directory {{ ontofox_path }}>
+      Options Indexes MultiViews FollowSymLinks
+      AllowOverride None
+      Order allow,deny
+      allow from all
+    </Directory>
+
+    CustomLog /var/log/apache2/ontofox_access.log combined 
+    ErrorLog /var/log/apache2/ontofox_error.log 
+</VirtualHost>
+

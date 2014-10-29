@@ -1,3 +1,0 @@
-- name: import ontobee.sql
-  mysql_db: name=ontobee state=import target=/tmp/ontobee.sql
-

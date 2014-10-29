@@ -1,8 +1,9 @@
 <VirtualHost *:80>
     ServerName {{ ontobee_domain }}
+    ServerAlias {{ ontobee_prefix }}.*.xip.io
 
-    DocumentRoot /var/www/ontobee 
-    <Directory />
+    DocumentRoot {{ ontobee_path }}
+    <Directory {{ ontobee_path }}>
       Options Indexes MultiViews FollowSymLinks
       AllowOverride None
       Order allow,deny
@@ -12,4 +13,3 @@
     CustomLog /var/log/apache2/ontobee_access.log combined 
     ErrorLog /var/log/apache2/ontobee_error.log 
 </VirtualHost>
-

@@ -1,0 +1,5 @@
+- name: restart virtuoso
+  service: name=virtuoso-opensource-6.1 state=restarted
+
+- name: import ontologies
+  command: isql-vt localhost dba "{{ virtuoso_dba_password }}" /tmp/ontologies.sql

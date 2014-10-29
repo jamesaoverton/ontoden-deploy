@@ -1,3 +1,0 @@
-- name: restart virtuoso
-  service: name=virtuoso-opensource-6.1 state=restarted
-

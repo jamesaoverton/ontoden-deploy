@@ -3,6 +3,3 @@
 
 - name: restart ssh
   service: name=ssh state=restarted
-
-- name: restart mysql
-  action: service name=mysql state=restarted

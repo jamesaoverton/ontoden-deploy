@@ -1,56 +1,41 @@
 - name: Install OntoBee from GitHub
   git: repo=https://github.com/ontoden/ontobee.git
-       dest=/var/www/ontobee
+       dest={{ ontobee_path }}
 
 - name: Download ADOdb5 dependency
   get_url: url=https://downloads.sourceforge.net/project/adodb/adodb-php5-only/adodb-519-for-php5/adodb519.tar.gz dest=/tmp/adodb519.tar.gz sha256sum=2a83383766ca46a77506ac2a0c1ed43662bc39b478c30a6da45c788c7fd13419
 
 - name: Unpack ADOdb5 dependency
-  unarchive: src=/tmp/adodb519.tar.gz dest=/var/www/ontobee/inc copy=no
+  unarchive: src=/tmp/adodb519.tar.gz dest={{ ontobee_path }}/inc copy=no
 
 - name: Change owner to www-data
-  file: path=/var/www/ontobee state=directory owner=www-data group=www-data recurse=yes
+  file: path={{ ontobee_path }} state=directory owner=www-data group=www-data recurse=yes
 
 #- name: Debugging
-#  lineinfile: dest=/var/www/ontobee/inc/Classes.php regexp='^function curl_post_contents' line='function curl_post_contents($url, $fields) { error_log("URL " . $url);'
+#  lineinfile: dest={{ ontobee_path }}/inc/Classes.php regexp='^function curl_post_contents' line='function curl_post_contents($url, $fields) { error_log("URL " . $url);'
 
 # TODO: Fix this!!! https://github.com/ontoden/ontobee/issues/6
 - name: Disable hardcoded external webservice
-  lineinfile: dest=/var/www/ontobee/browser/rdf.php regexp='^\s+\$strOutput = curl_post_contents\(\"http://141.211.109.48:8080' state=absent
+  lineinfile: dest={{ ontobee_path }}/browser/rdf.php regexp='^\s+\$strOutput = curl_post_contents\(\"http://141.211.109.48:8080' state=absent
  
 - name: Set OntoBee SQL host
-  lineinfile: dest=/var/www/ontobee/inc/Classes.php regexp='^\$host' line='$host="localhost";'
+  lineinfile: dest={{ ontobee_path }}/inc/Classes.php regexp='^\$host' line='$host="localhost";'
 
 - name: Set OntoBee SQL username
-  lineinfile: dest=/var/www/ontobee/inc/Classes.php regexp='^\$username' line='$username="ontobee";'
+  lineinfile: dest={{ ontobee_path }}/inc/Classes.php regexp='^\$username' line='$username="ontoden";'
 
 - name: Set OntoBee SQL password
-  lineinfile: dest=/var/www/ontobee/inc/Classes.php regexp='^\$password' line='$password=\"{{ mysql_ontobee_password }}\";'
+  lineinfile: dest={{ ontobee_path }}/inc/Classes.php regexp='^\$password' line='$password=\"{{ mysql_ontoden_password }}\";'
 
 - name: Set OntoBee SQL database
-  lineinfile: dest=/var/www/ontobee/inc/Classes.php regexp='^\$database' line='$database="ontobee";'
+  lineinfile: dest={{ ontobee_path }}/inc/Classes.php regexp='^\$database' line='$database="ontoden";'
 
 - name: Set OntoBee SPARQL endpoint
-  lineinfile: dest=/var/www/ontobee/inc/Classes.php regexp='^\$default_end_point' line='$default_end_point="http://localhost:8890/sparql";'
+  lineinfile: dest={{ ontobee_path }}/inc/Classes.php regexp='^\$default_end_point' line='$default_end_point="http://localhost:8890/sparql";'
 
 - name: Configure the Apache HTTP server for OntoBee
   template: src=etc_apache2_sites-available_ontobee.j2 dest=/etc/apache2/sites-available/ontobee.conf group=root owner=root force=yes
-
-- name: Add SQL user 'ontobee'
-  mysql_user: name=ontobee password={{ mysql_ontobee_password }} priv=ontobee.*:ALL state=present
-
-- name: Upload OntoBee default SQL
-  copy: src=ontobee.sql dest=/tmp/ontobee.sql
-
-- name: Create OntoBee SQL database
-  mysql_db: name=ontobee state=present
-  notify: import ontobee.sql
-
-# TODO: Automate this; for now do it manually http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/VirtTipsAndTricksGuideImportOntology
-#- name: Upload OBI import script
-#  copy: src=obi.sql dest=/tmp/obi.sql
-#- name: Import OBI into triplestore
-#  command: isql-vt localhost dba "{{ virtuoso_dba_password }}" /tmp/obi.sql
+  notify: restart apache
 
 - name: Enable OntoBee site
   command: a2ensite ontobee.conf creates=/etc/apache2/sites-enabled/ontobee.conf

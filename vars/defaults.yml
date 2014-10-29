@@ -6,11 +6,18 @@ testing: false
 
 ### common
 # domain: (required)
+www_path: /var/www
+ontobee_prefix: ontobee
+ontobee_domain: "{{ ontobee_prefix }}.{{ domain }}"
+ontobee_path: "{{ www_path }}/{{ ontobee_prefix }}"
+ontofox_prefix: ontofox
+ontofox_domain: "{{ ontofox_prefix }}.{{ domain }}"
+ontofox_path: "{{ www_path }}/{{ ontofox_prefix }}"
+
+### mysql
 # mysql_root_password: (required)
-ontobee_domain: ontobee.{{ domain }}
+# mysql_ontoden_password: (required)
 
-### triplestore
-#virtuoso_dba_password: (required)
+### virtuoso
+# virtuoso_dba_password: (required)
 
-### ontobee
-#mysql_ontobee_password: (required)

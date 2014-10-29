@@ -1,7 +1,12 @@
 ---
 # See `vars/defaults.yml` for available options.
 
+# common
 domain: TODO.org
+
+# mysql
 mysql_root_password: TODO
+mysql_ontoden_password: TODO
+
+# virtuoso
 virtuoso_dba_password: TODO
-mysql_ontobee_password: TODO

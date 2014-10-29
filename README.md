@@ -1,8 +1,8 @@
 # ontoden deploy
 
-Here are scripts to get [ontoden](https://github.com/ontoden) tools (so far just [Ontobee](https://github.com/ontoden/ontobee)) running on your own machine.
+Here are scripts to get [ontoden](https://github.com/ontoden) tools running on your machine. So far [Ontobee](https://github.com/ontoden/ontobee) and [OntoFox](https://code.google.com/p/ontofox).
 
-You have two installation options: a local virtual machine or your own server. Once that's running, there are some manual steps required to load ontologies.
+You have two installation options: a local virtual machine or your own server. Once that's running, there are some manual steps required to load more ontologies.
 
 
 ## Local Virtual Machine
@@ -19,15 +19,21 @@ Then you can run these commands:
     cd ontoden-deploy
     vagrant up
 
-It will take a while to download and install everything, but when it's done you can see your work at <http://172.16.100.2>. Virtuoso is available at <http://172.16.100.2:8890>. See below for additional manual steps.
+It will take a while to download and install everything, but when it's done you can see your work:
 
-Other things you can do with Vagrant:
+- Ontobee: <http://ontobee.172.16.100.2.xip.io>
+- OntoFox: <http://ontofox.172.16.100.2.xip.io>
+- Virtuoso: <http://172.16.100.2:8890>
+
+(<http://xip.io> is a "magic" DNS server that will redirect to your localhost. This is convenient when working with vhosts in Vagrant. It does not expose your virtual machine to the Internet, it just tells your browser to access the virtual machine in the right way.)
+
+See below for additional manual steps. Other things you can do with Vagrant:
 
 - log in to the virtual machine: `vagrant ssh`
 - run the Ansible configuration again: `vagrant provision`
 - stop the VM and delete all its files: `vagrant destroy`
 
-When run from Vagrant, the Ansible scripts use the `vagrant` user.
+When run from Vagrant, the Ansible scripts use the `vagrant` user and the firewall is turned off. You can access MySQL using your preferred client (such as [MySQL Workbench](http://mysqlworkbench.org)) with user "root" at IP 172.16.100.2 and port 3306.
 
 
 ## Server
@@ -47,11 +53,19 @@ Edit `hosts` to contain the IP address of your server. Then run Ansible using:
 
 It's safe to run Ansible repeatedly, when you want to update packages or you've changed the configuration. Ansible will use the `admin` user and `sudo`.
 
-The firewall is set to block Virtuoso's administration console in this configuration. To access it I suggest creating an SSH tunnel to your local machine:
+DNS is always a little tricky. I suggest creating A records with your server's IP for the `ontobee` and `ontofox` subdomains of `domain` in your `var/user.yml`.
+
+The firewall is set to block everything except SSH and HTTP. To access Virtuoso's administration console I suggest creating an SSH tunnel to your local machine:
     
     ssh admin@your-server.org -L 8890:localhost:8890 -N
 
 Then access Virtuoso at <http://localhost:8890>.
+
+To access MySQL using your preferred client (such as [MySQL Workbench](http://mysqlworkbench.org)), create another tunnel:
+    
+    ssh admin@your-server.org -L 3306:localhost:3306 -N
+
+Then connect as "root" to localhost on port 3306.
 
 
 ## Manual Steps
@@ -63,7 +77,7 @@ We haven't yet automated the process of loading ontology files into Virtuoso.
 3. log in as "dba" with your `virtuoso_dba_password` from `vars/user.yml`
 4. follow [these instructions](http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/VirtTipsAndTricksGuideImportOntology)
 
-You might also want to modify the `ontobee.ontology` MySQL table either directly, or by editing `roles/ontobee/files/ontobee.sql` and running Ansible again.
+You might also want to modify the `ontobee.ontology` MySQL table.
 
 
 ## Known Problems

@@ -8,8 +8,7 @@
   apt: pkg=virtuoso-opensource state=installed
   notify: restart virtuoso
 
-# WARNING: This is for testing purposes only!!!!
-# In production, use a ssh tunnel instead:
-- name: DANGER Open firewall 8890 for Virtuoso admin
-  ufw: rule=allow port=8890 proto=tcp
-  when: testing
+# To do this manually see http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/VirtTipsAndTricksGuideImportOntology
+- name: Upload ontologies.sql import script
+  copy: src=ontologies.sql dest=/tmp/ontologies.sql
+  notify: import ontologies

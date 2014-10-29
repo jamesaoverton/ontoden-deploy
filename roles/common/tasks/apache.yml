@@ -1,0 +1,18 @@
+- name: Install Apache and PHP
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - apache2
+    - libapache2-mod-php5
+    - php5-curl
+
+- name: Disable default Apache site
+  command: a2dissite 000-default removes=/etc/apache2/sites-enabled/000-default
+  notify: restart apache
+
+- name: Enable Apache headers module
+  command: a2enmod headers creates=/etc/apache2/mods-enabled/headers.load
+  notify: restart apache
+
+- name: Set ServerName for Apache
+  template: src=fqdn.j2 dest=/etc/apache2/conf.d/fqdn
+  notify: restart apache
