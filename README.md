@@ -9,9 +9,9 @@ You have two installation options: a local virtual machine or your own server. O
 
 A local virtual machine is the best option for testing. You'll need to install:
 
-- [Ansible](http://www.ansible.com) for configuration management
-- [VirtualBox](https://www.virtualbox.org) for virtual machine hosting
-- [Vagrant](https://www.vagrantup.com) for VM configuration
+- [Ansible](http://docs.ansible.com/intro_installation.html) for configuration management
+- [VirtualBox](https://www.virtualbox.org/wiki/Downloads) for virtual machine hosting
+- [Vagrant](https://www.vagrantup.com/downloads.html) for VM configuration
 
 Then you can run these commands:
 
@@ -33,14 +33,14 @@ See below for additional manual steps. Other things you can do with Vagrant:
 - run the Ansible configuration again: `vagrant provision`
 - stop the VM and delete all its files: `vagrant destroy`
 
-When run from Vagrant, the Ansible scripts use the `vagrant` user and the firewall is turned off. You can access MySQL using your preferred client (such as [MySQL Workbench](http://mysqlworkbench.org)) with user "root" at IP 172.16.100.2 and port 3306.
+When run from Vagrant, the Ansible scripts use the `vagrant` user and the firewall is turned off. You can access MySQL using your preferred client (such as [MySQL Workbench](http://mysqlworkbench.org)) with user "root" at IP 172.16.100.2 and port 3306, with the `mysql_root_password` from `vars/user.yml`.
 
 
 ## Server
 
 You can use the same Ansible scripts to configure any server running 64-bit Debian 7, whether it be on Amazon Web Services, Linode, or whatever you prefer. You probably want a fresh machine, though, because the scripts might not play nice with other software you've installed.
 
-On your local machine you only need to install Ansible, not Vagrant and VirtualBox. Then get a copy of the scripts:
+On your local machine you only need to [install Ansible](http://docs.ansible.com/intro_installation.html), not Vagrant and VirtualBox. Then get a copy of the scripts:
 
     git clone https://github.com/jamesaoverton/ontoden-deploy.git
     cd ontoden-deploy
@@ -65,7 +65,8 @@ To access MySQL using your preferred client (such as [MySQL Workbench](http://my
     
     ssh admin@your-server.org -L 3306:localhost:3306 -N
 
-Then connect as "root" to localhost on port 3306.
+Then connect as "root" to localhost on port 3306, with the `mysql_root_password` from `vars/user.yml`.
+
 
 
 ## Manual Steps
@@ -77,7 +78,7 @@ We haven't yet automated the process of loading ontology files into Virtuoso.
 3. log in as "dba" with your `virtuoso_dba_password` from `vars/user.yml`
 4. follow [these instructions](http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/VirtTipsAndTricksGuideImportOntology)
 
-You might also want to modify the `ontobee.ontology` MySQL table.
+You might also want to modify the `ontoden.ontology` MySQL table (instructions above).
 
 
 ## Known Problems
@@ -85,8 +86,6 @@ You might also want to modify the `ontobee.ontology` MySQL table.
 - Ontobee has an external dependency that we're currently disabling: <https://github.com/ontoden/ontobee/issues/6>
 - There's no code for loading ontologies, and the tables in `roles/ontobee/files` are just reverse-engineered hacks.
 - Not everything works yet. A good place to start debugging is `/var/log/apache2/ontobee_error.log`.
-
-
 
 
 # License
