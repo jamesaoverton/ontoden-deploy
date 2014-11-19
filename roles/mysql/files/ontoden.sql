@@ -11,7 +11,7 @@ CREATE TABLE ontology (
   to_list VARCHAR(1)
 );
 
-INSERT INTO ontology VALUES(1, "OBI", "Ontology for Biomedical Ontologies", "http://purl.obolibrary.org/obo/obi.owl", "http://purl.obolibrary.org/obo/obi.owl", "http://localhost:8890/sparql", "y", "y");
+INSERT INTO ontology VALUES(1, "OBI", "Ontology for Biomedical Investigations", "http://purl.obolibrary.org/obo/obi.owl", "http://purl.obolibrary.org/obo/obi.owl", "http://localhost:8890/sparql", "y", "y");
 
 
 DROP TABLE IF EXISTS key_terms;
